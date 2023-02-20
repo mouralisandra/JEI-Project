@@ -1,8 +1,8 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch } from '@nestjs/common';
 import { ProductsSerivce } from './products.service';
 @Controller('products/')
 export class ProductsController {
-    constructor(private readonly commercantSerivce:ProductsSerivce){}
+    constructor(private readonly ProductsSerivce:ProductsSerivce){}
     @Post()
     addProduct(
         @Body('name') name:string,
@@ -10,16 +10,26 @@ export class ProductsController {
         @Body('description') description:string,
         @Body('qte') qte:number
     ):any{
-        const id=this.commercantSerivce.addProduct(name,price,description, qte); 
+        const id=this.ProductsSerivce.addProduct(name,price,description, qte); 
         return {id:id};
     }
 
     @Get()
     getProducts(){
-        return this.commercantSerivce.getProducts();
+        return this.ProductsSerivce.getProducts();
     }
     @Get(':id')
     getProduct(@Param('id') id:string){
-        return this.commercantSerivce.getProduct(id);
+        return this.ProductsSerivce.getProduct(id);
+    }
+    @Patch(':id')
+    updateProduct(
+        @Param('id') id:string,
+        @Body('name') name:string,
+        @Body('price') price:number,
+        @Body('description') description:string,
+        @Body('qte') qte:number
+    ){
+        return this.ProductsSerivce.updateProduct(id,name,price,description,qte);
     }
 }

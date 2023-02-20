@@ -1,5 +1,5 @@
-import {Injectable} from '@nestjs/common';
-import {Product} from './product.model';
+import {Injectable, NotFoundException} from '@nestjs/common';
+import { Product } from './product.model';
 
 @Injectable()
 export class ProductsSerivce{
@@ -17,6 +17,23 @@ export class ProductsSerivce{
 
     getProduct(id:string){
         const product=this.products.find((prod)=>prod.id==id);
+        if(!product){
+            throw new NotFoundException("didn't find project");
+        }
+        return product;
+    }
+
+    updateProduct(id:string,title:string,price:number,description:string, qte:number){
+        const productIndex=this.products.findIndex((prod)=>prod.id==id);
+        const product=this.products[productIndex];
+        if(!product){
+            throw new NotFoundException("didn't find project");
+        }
+        if(title) product.name=title;
+        if(price) product.price=price;
+        if(description) product.description=description;
+        if(qte) product.qte=qte;
+        this.products[productIndex]=product;
         return product;
     }
 }
