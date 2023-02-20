@@ -27,7 +27,7 @@ export class ProductsSerivce{
         const productIndex=this.products.findIndex((prod)=>prod.id==id);
         const product=this.products[productIndex];
         if(!product){
-            throw new NotFoundException("didn't find project");
+            throw new NotFoundException("didn't find product");
         }
         if(title) product.name=title;
         if(price) product.price=price;
@@ -35,5 +35,16 @@ export class ProductsSerivce{
         if(qte) product.qte=qte;
         this.products[productIndex]=product;
         return product;
+    }
+
+    deleteProduct(id:string){
+        const productIndex=this.products.findIndex((prod)=>prod.id==id);
+        if(!this.products[productIndex]){
+            throw new NotFoundException("didn't find product");
+        }
+        else{
+            this.products.splice(productIndex,1);
+        }
+        return {message:`product with id ${id} delted succefully`};
     }
 }
