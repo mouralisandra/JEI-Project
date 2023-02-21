@@ -13,6 +13,6 @@ export class AuthService {
   }
 
   async validateUser(payload: Payload) {
-    return await this.userService.findByPayload(payload);
+        return await this.userService.findByPayload(payload);
   }
 }

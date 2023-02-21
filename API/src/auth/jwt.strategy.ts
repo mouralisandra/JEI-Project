@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, VerifiedCallback } from 'passport-jwt';
+import {Payload} from 'src/types/payload'
 
 import { AuthService } from './auth.service';
 
@@ -13,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any, done: VerifiedCallback) {
+  async validate(payload: Payload, done: VerifiedCallback) {
     const user = await this.authService.validateUser(payload);
     if (!user) {
       return done(
@@ -21,7 +22,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         false,
       );
     }
-
     return done(null, user, payload.iat);
   }
 }
