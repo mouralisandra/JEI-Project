@@ -4,6 +4,8 @@ import {Model} from 'mongoose';
 import {User} from 'src/types/user';
 import { RegisterDTO, LoginDTO } from '../auth/auth.dto';
 import * as bcrypt from 'bcrypt';
+import { Payload } from '../types/payload';
+
 
 @Injectable()
 export class UserService {
@@ -31,7 +33,7 @@ export class UserService {
         const { email, password } = userDTO;
         const user = await this.userModel
           .findOne({ email })
-          .select('username password seller created address');
+          .select('email password commercant created address');
         if (!user) {
           throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
         }
@@ -42,4 +44,9 @@ export class UserService {
           throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
         }
     }
+    async findByPayload(payload: Payload) {
+      const { email } = payload;
+      return await this.userModel.findOne({ email });
+    }
+  
 }
